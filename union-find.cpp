@@ -16,22 +16,26 @@ typedef vector<pll> vpl;
 #define sz(x) (int)x.size()
 #define pb push_back
 
-void init(int n, vi& parent)
+vi parent, depth;
+
+void init(int n)
 {
+    parent.resize(n);
+    depth.resize(n);
     for(int i = 0; i <= n; i++)
         parent[i] = i;
 }
 
-int look(int node, vi& parent)
+int look(int node)
 {
     if(parent[node] == node)
         return node;
-    return parent[node] = look(parent[node], parent);
+    return parent[node] = look(parent[node]);
 }
 
-void join(int a, int b, vi& parent, vi& depth)
+void join(int a, int b)
 {
-    a = look(a, parent), b = look(b, parent);
+    a = look(a), b = look(b);
     if(a == b)
         return;
     if(depth[a] < depth[b])
@@ -53,15 +57,15 @@ int main()
     ios_base::sync_with_stdio(0); cin.tie(0);
     int N, Q;
     cin >> N >> Q;
-    vi t(Q), u(Q), v(Q), parent(N), depth(N);
-    init(N, parent);
+    vi t(Q), u(Q), v(Q);
+    init(N);
     for(int q = 0; q < Q; q++)
     {
         cin >> t[q] >> u[q] >> v[q];
         if(t[q] == 0)
-            join(u[q], v[q], parent, depth);
+            join(u[q], v[q]);
         else
-            cout << (look(u[q], parent) == look(v[q], parent) ? 1 : 0) << "\n";
+            cout << (look(u[q]) == look(v[q]) ? 1 : 0) << "\n";
     }
     return 0;
 }
