@@ -20,9 +20,6 @@ vl a, prefix;
 
 void init(int n)
 {
-    a.resize(n);
-    for(int i = 0; i < n; i++)
-        cin >> a[i];
     prefix.resize(n);
     prefix[0] = a[0];
     for(int i = 1; i < n; i++)
@@ -31,7 +28,7 @@ void init(int n)
 
 ll qry(int l, int r)
 {
-    return prefix[r] - (l >= 0 ? prefix[l] : 0);
+    return prefix[r - 1] - (l - 1 >= 0 ? prefix[l - 1] : 0);
 }
 
 int main()
@@ -39,12 +36,15 @@ int main()
     ios_base::sync_with_stdio(0); cin.tie(0);
     int N, Q;
     cin >> N >> Q;
+    a.resize(N);
+    for(int i = 0; i < N; i++)
+        cin >> a[i];
     vi l(Q), r(Q);
     init(N);
     for(int i = 0; i < Q; i++) 
     {
         cin >> l[i] >> r[i];
-        cout << qry(l[i] - 1, r[i] - 1) << "\n";
+        cout << qry(l[i], r[i]) << "\n";
     }
     return 0;
 }
